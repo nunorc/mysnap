@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mysnap &mdash; mysnap 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="mysnap" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> mysnap
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">mysnap</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">mysnap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>mysnap</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="mysnap">
+<h1>mysnap<a class="headerlink" href="#mysnap" title="Permalink to this headline"></a></h1>
+<p>An experimental package with simple utilities for quickly importing
+and handling ESA SNAP toolbox products in BEAM-DIMAP format.</p>
+<div class="section" id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline"></a></h2>
+<p>Install package from the git repository:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install git+https://github.com/nunorc/mysnap@master
+</pre></div>
+</div>
+<p>Open a product, build images by stacking bands, and split in tiles.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mysnap</span>
+
+<span class="c1"># product filename in beam-dimap format</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;~/Products/subset_2021_resampled.dim&#39;</span>
+
+<span class="c1"># load product from file</span>
+<span class="n">product</span> <span class="o">=</span> <span class="n">mysnap</span><span class="o">.</span><span class="n">Product</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+<span class="c1"># check rasterized size of image and number of bands</span>
+<span class="n">product</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">ncols</span><span class="p">,</span> <span class="n">product</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">nrows</span><span class="p">,</span> <span class="n">product</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">nbands</span>  <span class="c1"># 2312, 2312, 43</span>
+
+<span class="c1"># get list of bands</span>
+<span class="n">product</span><span class="o">.</span><span class="n">bands</span>  <span class="c1"># [&#39;b1&#39;, &#39;b2&#39;, &#39;b3&#39;, ...</span>
+
+<span class="c1"># access individual band</span>
+<span class="n">product</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">product</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">array</span>  <span class="c1"># &#39;b1&#39;, array([[1731., 1731., 1731., ...</span>
+
+<span class="c1"># build a stacked array of selected bands</span>
+<span class="n">bands</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;b2&#39;</span><span class="p">,</span> <span class="s1">&#39;b3&#39;</span><span class="p">,</span> <span class="s1">&#39;b4&#39;</span><span class="p">,</span> <span class="s1">&#39;b5&#39;</span><span class="p">,</span> <span class="s1">&#39;b6&#39;</span><span class="p">,</span> <span class="s1">&#39;b7&#39;</span><span class="p">,</span> <span class="s1">&#39;b8&#39;</span><span class="p">,</span> <span class="s1">&#39;b8a&#39;</span><span class="p">,</span> <span class="s1">&#39;b11&#39;</span><span class="p">,</span> <span class="s1">&#39;b12&#39;</span><span class="p">]</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">mysnap</span><span class="o">.</span><span class="n">normalize</span><span class="p">)</span>
+<span class="n">arr</span><span class="o">.</span><span class="n">shape</span>   <span class="c1"># (2312, 2312, 10)</span>
+
+<span class="c1"># split stack in 64x64 tiles</span>
+<span class="n">tiles</span> <span class="o">=</span> <span class="n">mysnap</span><span class="o">.</span><span class="n">tiles</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+<span class="n">tiles</span><span class="o">.</span><span class="n">shape</span>   <span class="c1"># (1296, 64, 64, 10)</span>
+
+<span class="c1"># build a rgb image</span>
+<span class="n">bands</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;b4&#39;</span><span class="p">,</span> <span class="s1">&#39;b3&#39;</span><span class="p">,</span> <span class="s1">&#39;b2&#39;</span><span class="p">]</span>
+<span class="n">rgb</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">mysnap</span><span class="o">.</span><span class="n">normalize</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="acknowledgments">
+<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Permalink to this headline"></a></h2>
+<p>Raster data imported with <a class="reference external" href="https://rasterio.readthedocs.io/en/latest/">rasterio</a>.
+Thank you to <a class="reference external" href="https://www.esa.int/">ESA</a>,
+the authors of the <a class="reference external" href="https://step.esa.int/main/toolboxes/snap/">SNAP Toolbox</a>,
+and upstream packages and products.</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">mysnap</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mysnap.html">mysnap package</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-right" title="mysnap" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Nuno Ramos Carvalho.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
