@@ -5,6 +5,9 @@ mysnap
 An experimental package with simple utilities for quickly importing
 and handling ESA SNAP toolbox products in BEAM-DIMAP format.
 
+Package available from `GitHub <https://github.com/nunorc/mysnap>`_,
+documentation available `here <https://nunorc.github.io/mysnap/>`_.
+
 Quick Start
 ---------------------------
 
