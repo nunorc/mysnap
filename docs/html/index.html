@@ -106,7 +106,7 @@ and handling ESA SNAP toolbox products in BEAM-DIMAP format.</p>
 
 <span class="c1"># build a rgb image</span>
 <span class="n">bands</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;b4&#39;</span><span class="p">,</span> <span class="s1">&#39;b3&#39;</span><span class="p">,</span> <span class="s1">&#39;b2&#39;</span><span class="p">]</span>
-<span class="n">rgb</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">mysnap</span><span class="o">.</span><span class="n">normalize</span><span class="p">)</span>
+<span class="n">rgb</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="n">quantiles</span><span class="o">=</span><span class="p">[</span><span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.975</span><span class="p">],</span> <span class="nb">max</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">mysnap</span><span class="o">.</span><span class="n">normalize</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

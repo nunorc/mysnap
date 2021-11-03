@@ -74,18 +74,37 @@ class Product:
 
         self.bands = _sort_alphanum(self.bands)
 
-    def stack(self, bands, min=None, max=None, normalize=None):
+
+    def stack(self, bands, quantiles=None, min=None, max=None, normalize=None):
+        """ Stack a collection of bands.
+
+        Args:
+            bands (list): a list of band names
+            quantiles (tuple): clip band values between quantiles, e.g. `[0.025, 0.975]`, defaults to `None`
+            min (int): clip band values below this threshold, defaults to `None`
+            max (int):  clip band values above this threshold, defaults to `None`
+            normalize (func): a function to normalize band array, defaults to `None`
+        Returns:
+            np.array: a stack of band arrays
+        """
         l = []
+
         for b in bands:
             a = self.__getattribute__(b).array
+
+            if quantiles:
+                qs = np.quantile(a, quantiles)
+                a = np.clip(a, qs[0], qs[1])
+
+            if min or max:
+                a = np.clip(a, min, max)
+
             if normalize:
                 a = normalize(a)
             
-            l.append(self.__getattribute__(b).array)
+            l.append(a)
         
         arr = np.stack(l, axis=-1)
-        if min or max:
-            arr = np.clip(arr, min, max)
 
         return arr
 

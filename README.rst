@@ -49,7 +49,7 @@ Open a product, build images by stacking bands, and split in tiles.
 
     # build a rgb image
     bands = ['b4', 'b3', 'b2']
-    rgb = product.stack(bands, normalize=mysnap.normalize)
+    rgb = product.stack(bands, quantiles=[0.025, 0.975], max=3000, normalize=mysnap.normalize)
 
 Acknowledgments
 ---------------------------
